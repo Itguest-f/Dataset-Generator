@@ -6,7 +6,7 @@ class CaseGenerator:
     '''
     FJSP instance generator
     '''
-    def __init__(self, job_init,job_new, num_mas, opes_per_job_min, opes_per_job_max, nums_ope=None, path='./1305/',
+    def __init__(self, job_init,job_new, num_mas, opes_per_job_min, opes_per_job_max, nums_ope=None, path='./test/',
                  flag_same_opes=True, flag_doc=False,flag_job_new=False):
         if nums_ope is None:
             nums_ope = []
@@ -96,7 +96,7 @@ class CaseGenerator:
                     break
         lines.append('\n')
         if self.flag_doc:
-            # 确保目录存在
+            # Ensure that the directory exists
             os.makedirs(self.path, exist_ok=True)
             with open(self.path + '{0}j_{1}m_{2}.fjs'.format(self.num_jobs, self.num_mas, str.zfill(str(idx+1),3)),'a') as doc:
                 for i in range(len(lines_doc)):
