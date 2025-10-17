@@ -3,8 +3,8 @@ import torch
 def simulate_proc_time_variation(proc_times_batch, variation_rate, mode='gaussian'):
     """
     :param proc_times_batch: Tensor (batch, opes, mas)
-    :param variation_rate: max ±20% 的扰动
-    :param variation_rate: max 20% 的扰动
+    :param variation_rate: max ±20% disturbance
+    :param variation_rate: max 20% disturbance
     :param mode: ['uniform', 'gaussian']
     :return: Tensor with varied processing times
     """
@@ -14,10 +14,10 @@ def simulate_proc_time_variation(proc_times_batch, variation_rate, mode='gaussia
         noise = torch.randn_like(proc_times_batch) * variation_rate
     else:
         raise ValueError("Unsupported mode")
-    noise = torch.clamp(noise, min = 0) # 速度提升符合模拟场景
-    # noise = torch.clamp(noise, min = -0.20) # 速度提升符合模拟场景
+    noise = torch.clamp(noise, min = 0) # Speed improvement is in line with simulated scenarios
+    # noise = torch.clamp(noise, min = -0.20) # Speed improvement is in line with simulated scenarios
     proc_times_varied = proc_times_batch * (1 + noise)
-    return torch.clamp(proc_times_varied, min = 0)  # 避免为负
+    return torch.clamp(proc_times_varied, min = 0)  # Avoid being negative
 
 
 if __name__ == '__main__':
