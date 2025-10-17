@@ -5,27 +5,26 @@ import torch
 
 def new_jobs_arrive_time(batch_size, num_jobs, num_new_jobs, eva):
     """
-    高效生成包含旧工件占位和新工件指数分布到达时间的张量。
+    Efficiently generate tensors that include the occupancy of old workpieces and the arrival time of new workpiece exponential distributions.
+    parameter:
+    - batch_size: Batch size
+    - num_jobs: Current number of old workpieces
+    - num_new_jobs: Number of newly added workpieces
+    - eva: Mean exponential distribution of arrival time (Eva)
 
-    参数:
-    - batch_size: 批大小
-    - num_jobs: 当前旧工件数量
-    - num_new_jobs: 新增工件数量
-    - eva: 到达时间的指数分布均值 (Eva)
-
-    返回:
-    - Tensor: [batch_size, num_jobs + num_new_jobs] 的到达时间张量
+    return:
+    - Tensor: [batch_size, num_jobs + num_new_jobs] The arrival time tensor
     """
-    A0 = torch.zeros(size=(batch_size, num_jobs), dtype=torch.long)  # 旧工件占位
-    A1 = torch.distributions.Exponential(rate=1 / eva).sample((num_new_jobs,))  # 新工件到达时间
-    A1, _ = torch.sort(A1)  # 排序（可选）
-    A1 = A1.expand(batch_size, -1)  # 扩展到每个 batch
-    return torch.cat((A0, A1), dim=1)  # 合并
+    A0 = torch.zeros(size=(batch_size, num_jobs), dtype=torch.long)  # Old workpiece occupying space
+    A1 = torch.distributions.Exponential(rate=1 / eva).sample((num_new_jobs,))  # New workpiece arrival time
+    A1, _ = torch.sort(A1)  # Sorting (optional)
+    A1 = A1.expand(batch_size, -1)  # Expand to each batch
+    return torch.cat((A0, A1), dim=1)  # merge
 
 def generate_new_jobs(num_jobs, num_mas,proctime_min=1, proctime_max=20, dev_ratio=0.2):
     """
-    生成新工件的 .fjs 格式行列表，每行对应一个工件
-    返回：List[str]
+    Generate a list of. fjs format lines for new artifacts, with each line corresponding to one artifact
+    return：List[str]
     """
     opes_per_job_min = int(num_mas * 0.8)
     opes_per_job_max = int(num_mas * 1.2)
