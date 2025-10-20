@@ -84,7 +84,7 @@ def generate_new_jobs(num_jobs, num_mas,proctime_min=1, proctime_max=20, dev_rat
 
 
 if __name__ == '__main__':
-    lines = generate_new_jobs(2,5,1,20)
+    lines = generate_new_jobs(2,5,1,19)
     print(lines)
     A = new_jobs_arrive_time(6,10,3,50)
     print(A)
